@@ -4,13 +4,13 @@ import CheckoutProduct from "../../checkoutProduct/CheckoutProduct";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import CurrencyFormat from "react-currency-format";
 import { getBasketTotal } from "../../../reducer";
-import "./payment.css";
 import { useEffect, useState } from "react";
-import { async } from "@firebase/util";
 import axios from "axios";
+import { db } from "../../../../firebase";
+import "./payment.css";
 
 const Payment = () => {
-  const [{ basket, user }] = useStateValue();
+  const [{ basket, user, dispatch }] = useStateValue();
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
@@ -46,10 +46,24 @@ const Payment = () => {
       })
       .then(({ paymentIntent }) => {
         // Payment confiramtion
+        db.collection("users")
+          .doc(user?.uid)
+          .collection("orders")
+          .doc(paymentIntent.id)
+          .set({
+            basket: basket,
+            amount: paymentIntent.amount,
+            created: paymentIntent.created,
+          });
+
         setSucceeded(true);
         setError(null);
         setProcessing(false);
-        
+
+        dispatch({
+          type: "EMPTY_BASKET",
+        });
+
         navigate("orders");
       });
   };
