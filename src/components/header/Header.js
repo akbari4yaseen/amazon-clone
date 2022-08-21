@@ -28,7 +28,7 @@ const Header = () => {
         <Link to={!user && "login"}>
           <div className="header__option">
             <span className="header__optionLineOne">
-               {user ? user?.email.split("@")[0] : "Guest"}
+              {user ? user?.email.split("@")[0] : "Guest"}
             </span>
             <span
               className="header__optionLineTwo"
@@ -38,16 +38,20 @@ const Header = () => {
             </span>
           </div>
         </Link>
-        <div className="header__option">
-          <span className="header__optionLineOne">Return</span>
-          <span className="header__optionLineTwo">Orders</span>
-        </div>
-        <div className="header__option">
-          <span className="header__optionLineOne">Your</span>
-          <span className="header__optionLineTwo">Prime</span>
-        </div>
+        <Link to="/orders">
+          <div className="header__option">
+            <span className="header__optionLineOne">Return</span>
+            <span className="header__optionLineTwo">Orders</span>
+          </div>
+        </Link>
+        <Link to="">
+          <div className="header__option">
+            <span className="header__optionLineOne">Your</span>
+            <span className="header__optionLineTwo">Prime</span>
+          </div>
+        </Link>
 
-        <Link to="checkout">
+        <Link to="/checkout">
           <div className="header__optionBasket">
             <ShoppingBasketIcon />
             <span className="header__optionLineTwo header__basketCount">
